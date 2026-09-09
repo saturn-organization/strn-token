@@ -1,0 +1,54 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Contracts and deployment configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          submodules: recursive
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24.18.1"
+          cache: npm
+
+      - uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1
+        with:
+          version: v1.8.1
+
+      - name: Install locked verification dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install pinned formatters
+        run: |
+          python3 -m venv "$RUNNER_TEMP/strn-format"
+          "$RUNNER_TEMP/strn-format/bin/pip" install --disable-pip-version-check ruff==0.12.0
+          echo "$RUNNER_TEMP/strn-format/bin" >> "$GITHUB_PATH"
+          go install mvdan.cc/sh/v3/cmd/shfmt@v3.12.0
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Verify contracts and configuration
+        # Forge installs the compiler pinned by foundry.toml before the upgrade checks use it.
+        run: STRN_SOLC="$HOME/.svm/0.8.36/solc-0.8.36" bash scripts/verify.sh
+
+      - name: Verify gas baseline guard
+        run: python3 scripts/test-gas-verification.py
