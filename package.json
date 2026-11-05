@@ -1,0 +1,14 @@
+{
+  "name": "strn-token-audit",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "check:upgrade": "node scripts/check-upgrade.cjs",
+    "format": "bash scripts/format.sh write",
+    "format:check": "bash scripts/format.sh check"
+  },
+  "devDependencies": {
+    "@openzeppelin/upgrades-core": "1.46.0",
+    "prettier": "3.6.2"
+  }
+}

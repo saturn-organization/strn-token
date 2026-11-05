@@ -1,0 +1,33 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = ["lib"]
+# Verification never regenerates baselines. Use scripts/update-gas.sh deliberately.
+gas_snapshot_emit = false
+solc = "0.8.36"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/", "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/", "forge-std/=lib/forge-std/src/"]
+
+[profile.default.fuzz]
+runs = 1024
+seed = "0x5354524e"
+
+[profile.default.invariant]
+runs = 256
+depth = 128
+fail_on_revert = true
+
+[profile.audit.fuzz]
+runs = 10000
+
+[profile.audit.invariant]
+runs = 1000
+depth = 256
+fail_on_revert = true

@@ -1,0 +1,28 @@
+{
+  "chainId": 1,
+  "timelock": "0xfD5782E3BFF366601da3973aE30C583dE4F08A67",
+  "proposer": "0x610182581C93687Ca03F4a8E7f124f8cEC616820",
+  "strn": {
+    "approved": false,
+    "allocationRecipient": null,
+    "recoveryRecipient": null,
+    "adminTransferDelaySeconds": null,
+    "pauser": null,
+    "unpauser": null,
+    "blacklister": null,
+    "seizer": null,
+    "parameterManager": "0xfD5782E3BFF366601da3973aE30C583dE4F08A67",
+    "salt": null,
+    "releaser": null
+  },
+  "staking": {
+    "approved": false,
+    "pauser": null,
+    "unpauser": null,
+    "seizer": null,
+    "releaser": null,
+    "durationSeconds": 10368000,
+    "adminTransferDelaySeconds": null,
+    "salt": null
+  }
+}

@@ -1,0 +1,10 @@
+lib/
+node_modules/
+out/
+cache/
+artifacts/
+package-lock.json
+snapshots/
+verification/baselines/
+.env*
+.vars*
